@@ -14,7 +14,7 @@ for line in lines.splitlines():
     line = line.replace(b"vmess://", b"")
     j = json.loads(base64.b64decode(line+b"==="))
     j0[var.j1][0][var.j2][var.j3][0]['address'] = j['add']
-    j0[var.j1][0][var.j2][var.j3][0]['port'] = j['port']
+    j0[var.j1][0][var.j2][var.j3][0]['port'] = int(j['port'])
     j0[var.j1][0][var.j2][var.j3][0]['users'][0]['id'] = j['id']
     name = re.compile('s[0-9]+').search(j['add']).group(0)
     open(f"config_{name}.json", "w").write(json.dumps(j0, indent=4))
