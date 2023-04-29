@@ -8,13 +8,30 @@ sys.path.append(".")
 import var
 
 lines = base64.b64decode(requests.get(var.url).text)
-j0 = json.loads(open("config.json").read())
+j0 = json.loads(open("config_main.json").read())
+j1 = json.loads(open("config_download.json").read())
+
+def do(jo,j,i):
+    name = re.compile('s[0-9]+').search(j['add']).group(0)
+    jo[var.j1][i][var.j2][var.j3][0]['address'] = j['add']
+    jo[var.j1][i][var.j2][var.j3][0]['port'] = int(j['port'])
+    jo[var.j1][i][var.j2][var.j3][0]['users'][0]['id'] = j['id']
+    jo[var.j1][i]["tag"] = f"vps_{name}"
 
 for line in lines.splitlines():
+
     line = line.replace(b"vmess://", b"")
     j = json.loads(base64.b64decode(line+b"==="))
-    j0[var.j1][0][var.j2][var.j3][0]['address'] = j['add']
-    j0[var.j1][0][var.j2][var.j3][0]['port'] = int(j['port'])
-    j0[var.j1][0][var.j2][var.j3][0]['users'][0]['id'] = j['id']
     name = re.compile('s[0-9]+').search(j['add']).group(0)
-    open(f"config_{name}.json", "w").write(json.dumps(j0, indent=4))
+
+    if name == "s4":
+        do(j0,j,0)
+
+    if name == "s3":
+        do(j0,j,1)
+
+    if name == "s801":
+        do(j1,j,0)
+
+    open(f"config_main.json", "w").write(json.dumps(j0, indent=4))
+    open(f"config_download.json", "w").write(json.dumps(j1, indent=4))
