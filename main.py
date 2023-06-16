@@ -8,8 +8,8 @@ sys.path.append(".")
 import var
 
 lines = base64.b64decode(requests.get(var.url).text)
-j0 = json.loads(open("config_main.json").read())
-j1 = json.loads(open("config_download.json").read())
+j0 = json.loads(open("config_s1.json").read())
+j1 = json.loads(open("config_s52.json").read())
 
 def do(jo,j,i):
     name = re.compile('s[0-9]+').search(j['add']).group(0)
@@ -24,14 +24,11 @@ for line in lines.splitlines():
     j = json.loads(base64.b64decode(line+b"==="))
     name = re.compile('s[0-9]+').search(j['add']).group(0)
 
-    if name == "s4":
+    if name == "s1":
         do(j0,j,0)
 
-    if name == "s3":
-        do(j0,j,1)
-
-    if name == "s801":
+    if name == "s52":
         do(j1,j,0)
 
-    open(f"config_main.json", "w").write(json.dumps(j0, indent=4))
-    open(f"config_download.json", "w").write(json.dumps(j1, indent=4))
+    open(f"config_s1.json", "w").write(json.dumps(j0, indent=4))
+    open(f"config_s52.json", "w").write(json.dumps(j1, indent=4))
